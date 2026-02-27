@@ -147,4 +147,4 @@ sudo systemctl start mesh-irc
 
 ## License
 
-MIT License - feel free to modify and redistribute.
+GPL-3.0 - See [LICENSE](LICENSE) for details.

@@ -1,0 +1,62 @@
+# Meshtastic-IRC Bridge Configuration
+# Copy this file to config.yaml and edit to match your setup:
+#   cp config.yaml.example config.yaml
+
+# Bridge mode:
+#   "relay"  - Single bot relays all messages: <meshbridge> [Alice] Hello
+#   "puppet" - Each mesh node gets its own IRC user: <mesh_Alice> Hello
+mode: "puppet"
+
+# Optional: Dedicated channel for direct messages to the gateway
+# If someone DMs your T-Deck directly, it appears here
+dm_channel: "#meshtastic-dm"
+
+irc:
+  server: "irc.libera.chat"
+  port: 6697
+  ssl: true
+  nickname: "meshbridge"
+  realname: "Meshtastic IRC Bridge"
+  # Prefix for puppet nicknames (e.g., "mesh_Alice", "mesh_Bob")
+  puppet_prefix: "mesh_"
+  # Optional: NickServ password
+  # password: "your_password"
+
+meshtastic:
+  # Connection type: "serial", "tcp", or "ble"
+  connection: "serial"
+  # For serial: device path
+  #   Linux:  /dev/ttyUSB0 or /dev/ttyACM0
+  #   macOS:  /dev/cu.usbserial-0001 or /dev/cu.wchusbserial-*
+  device: "/dev/ttyUSB0"
+  # For TCP: host and port
+  # host: "192.168.1.100"
+  # port: 4403
+
+# Channel mappings: Meshtastic channel index -> IRC channel
+# Messages on the given mesh channel are bridged to the IRC channel.
+channels:
+  0: "#meshtastic"
+
+# Message formatting (only used in "relay" mode)
+formatting:
+  # How mesh messages appear in IRC
+  mesh_to_irc: "[{node_name}] {message}"
+  # How IRC messages appear on mesh
+  irc_to_mesh: "<{nick}> {message}"
+  # Include signal/SNR info
+  show_signal: true
+  # Include GPS coordinates when available
+  show_position: false
+
+# Rate limiting (mesh network is slow)
+rate_limit:
+  # Max messages per minute to mesh
+  mesh_max_per_minute: 10
+  # Queue excess messages
+  queue_overflow: true
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "bridge.log"
